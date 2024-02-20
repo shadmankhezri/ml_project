@@ -1,8 +1,4 @@
 
-# from sklearn.model_selection import train_test_split
-# from sklearn.preprocessing import StandardScaler
-
-
 from src.display import display
 from src.read_file import read_file
 from src.show_info_data import show_info_data
@@ -11,9 +7,13 @@ from src.preprocessing_data import prepro_data
 from src.preprocessing_data import assign_label
 from src.quality_counts import quality_value_counts
 from src.show_plot_quality import show_plot_quality
-# from src.rf_classifier import random_forest_classifier
+from src.train_test import train_test_x , train_test_y
+from src.standard_scaler import standard_scaler_train , standard_scaler_test
+from sklearn.model_selection import train_test_split
+from src.rf_classifier import random_forest_classifier
+from src.classification_report_matrix import classific_report , confus_matrix
 
-from src.train_test import train_test_x , train_test_y , x_train , x_test , y_ttrain , y_ttest
+
 
 PATH = "data/winequality-red.csv"
 
@@ -41,30 +41,32 @@ def main():
     # show_plot_quality(df_wine["quality"])
 
 
-    
-    X = train_test_x(df_wine)
+  
+    x = train_test_x(df_wine)   # return X
 
-    y = train_test_y(df_wine)
-
-
-    # X = df_wine.drop('quality', axis = 1)
-    # y = df_wine['quality']
-
-    x_train(X , y)
-    x_test(X , y)
-    y_ttrain(X , y)
-    y_ttest(X , y)
-
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
-
-    # sc = StandardScaler()
-
-    # X_train = sc.fit_transform(X_train)
-    # X_test = sc.fit_transform(X_test)
+    y = train_test_y(df_wine)   # return y  
 
 
-    # random_forest_classifier(X_train , y_train)
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, random_state = 42)
 
+
+
+
+    X_train = standard_scaler_train(X_train)   # return standard X_train
+    display(X_train)
+
+
+    X_test = standard_scaler_test(X_test)      # return standard X_test
+    display(X_test)
+
+
+
+    pred_rfc = random_forest_classifier(X_train , y_train , X_test)
+    display(pred_rfc)                                                 # return pred_rfc
+
+
+    display(classific_report(y_test , pred_rfc))
+    display(confus_matrix(y_test , pred_rfc))
 
 
 if __name__ == "__main__":
