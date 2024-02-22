@@ -14,7 +14,7 @@ from src.report_matrix import classific_report , confus_matrix
 from src.svm_model import svm_classifier
 from src.mlp_classifier import mlp_classifier
 from src.accuracy import accuracy
-from src.x_new import new_wine , y_new
+from src.check_new_sample import new_wine , predect_quality
 
 #-----------------------------------------------
 # it is path of the first dataframe
@@ -82,7 +82,8 @@ def main():
     X_test = standard_scaler_test(X_test)      # return standard X_test
     display(f"x_test standard data:\n\n{X_test}")
 
-#-----------------------------------------------
+#==================================================================
+    
     # the first our model
     # Random Forest Classifier
 
@@ -100,50 +101,59 @@ def main():
     # calculate accuracy for random forest model
 
     acc_forest_model = accuracy(y_test , pred_rfc)
-    display(f"Random forest gives the accuracy of :{acc_forest_model}")
+    display(f"Random forest model gives the accuracy of :{acc_forest_model}")
 
-#-----------------------------------------------
+#==================================================================
     # the second our model 
     # SVM
 
-    pred_svm = svm_classifier(X_train , y_train , X_test)
-    display(f"prediction y(quality of test data) of SVM:\n\n{pred_svm}")                                                   # return pred_clf
+    # pred_svm = svm_classifier(X_train , y_train , X_test)
+    # display(f"prediction y(quality of test data) of SVM:\n\n{pred_svm}")                                                   # return pred_clf
 
 #-----------------------------------------------
     # for see model performed
 
-    display(classific_report(y_test , pred_svm))
-    display(confus_matrix(y_test , pred_svm))
+    # display(classific_report(y_test , pred_svm))
+    # display(confus_matrix(y_test , pred_svm))
 
 #-----------------------------------------------
     # calculate accuracy for SVM model
 
-    acc_svm = accuracy(y_test , pred_svm)
-    display(f"SVM gives the accuracy of :{acc_svm}")
+    # acc_svm = accuracy(y_test , pred_svm)
+    # display(f"SVM model gives the accuracy of :{acc_svm}")
 
 
-#-----------------------------------------------
+#==================================================================
+    # the third our model
+    # neural_network model
 
     # pred_mlpc = mlp_classifier(X_train , y_train , X_test)
-    # display(pred_mlpc)                                                # return pred_mlpc
+    # display(f"prediction y(quality of test data) of neural_network:\n\n{pred_mlpc}")                                                # return pred_mlpc
 
 #-----------------------------------------------
+    # for see model performed
+
     # display(classific_report(y_test , pred_mlpc))
     # display(confus_matrix(y_test , pred_mlpc))   
 
 #-----------------------------------------------
-    # display(accuracy(y_test , pred_mlpc))
+    
+    # acc_neural_network = accuracy(y_test , pred_mlpc)
+    # display(f"neural network model gives the accuracy of :{acc_neural_network}")
 
+
+#==================================================================
+    # give new parameters of wine without quality
+
+    new = [[7.4,0.70,0.00,1.9,0.076,11.0,34.0,0.9978,3.51,0.56,9.4]]
+    X_new = new_wine(new)
+    display(X_new)
 
 #-----------------------------------------------
+    # predict quality of new wine
 
-    # new = [[7.4,0.70,0.00,1.9,0.076,11.0,34.0,0.9978,3.51,0.56,9.4]]
-    # X_new = new_wine(new)
-    # display(X_new)
-
-#-----------------------------------------------
-
-    # display(y_new(X_train , y_train , X_new))
+    new_wine_quality = predect_quality(X_train , y_train , X_new)
+    display(f"The quality of wine with given parameters is:{new_wine_quality}")
     
 #-----------------------------------------------
 
