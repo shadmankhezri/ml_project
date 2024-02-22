@@ -9,9 +9,9 @@ from src.show_plot_quality import show_plot_quality
 from src.train_test import train_test_x , train_test_y
 from src.standard_scaler import standard_scaler_train , standard_scaler_test
 from sklearn.model_selection import train_test_split
-from src.rfo_classifier import random_forest_classifier
-from src.classification_report_matrix import classific_report , confus_matrix
-from src.svm_classifi import svm_classifier
+from src.random_forest import random_forest_classifier
+from src.report_matrix import classific_report , confus_matrix
+from src.svm_model import svm_classifier
 from src.mlp_classifier import mlp_classifier
 from src.accuracy import accuracy
 from src.x_new import new_wine , y_new
@@ -83,32 +83,43 @@ def main():
     display(f"x_test standard data:\n\n{X_test}")
 
 #-----------------------------------------------
-
+    # the first our model
+    # Random Forest Classifier
 
     pred_rfc = random_forest_classifier(X_train , y_train , X_test)
-    display(pred_rfc)                                                 # return pred_rfc
+    display(f"prediction y(quality of test data) of random forest:\n\n{pred_rfc}")                                                 # return pred_rfc
 
 #-----------------------------------------------
+    # for see model performed
 
-    # display(classific_report(y_test , pred_rfc))
-    # display(confus_matrix(y_test , pred_rfc))
-
-#-----------------------------------------------
-    # display(accuracy(y_test , pred_rfc))
+    display(classific_report(y_test , pred_rfc))
+    display(confus_matrix(y_test , pred_rfc))
 
 #-----------------------------------------------
+    
+    # calculate accuracy for random forest model
 
-
-    # pred_clf = svm_classifier(X_train , y_train , X_test)
-    # display(pred_clf)                                                   # return pred_clf
-
-#-----------------------------------------------
-
-    # display(classific_report(y_test , pred_clf))
-    # display(confus_matrix(y_test , pred_clf))
+    acc_forest_model = accuracy(y_test , pred_rfc)
+    display(f"Random forest gives the accuracy of :{acc_forest_model}")
 
 #-----------------------------------------------
-    # display(accuracy(y_test , pred_clf))
+    # the second our model 
+    # SVM
+
+    pred_svm = svm_classifier(X_train , y_train , X_test)
+    display(f"prediction y(quality of test data) of SVM:\n\n{pred_svm}")                                                   # return pred_clf
+
+#-----------------------------------------------
+    # for see model performed
+
+    display(classific_report(y_test , pred_svm))
+    display(confus_matrix(y_test , pred_svm))
+
+#-----------------------------------------------
+    # calculate accuracy for SVM model
+
+    acc_svm = accuracy(y_test , pred_svm)
+    display(f"SVM gives the accuracy of :{acc_svm}")
 
 
 #-----------------------------------------------
