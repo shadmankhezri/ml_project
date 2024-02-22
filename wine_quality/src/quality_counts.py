@@ -1,6 +1,4 @@
-# with this func show counts of value and show plot of quality value
-
-
+# with this func show counts of values
 
 
 def quality_value_counts(data):

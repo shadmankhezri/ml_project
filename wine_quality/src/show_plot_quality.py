@@ -1,4 +1,5 @@
 
+# with seaborn and matplotlib , show plot of values , 0 and 1
 
 
 import seaborn as sns
