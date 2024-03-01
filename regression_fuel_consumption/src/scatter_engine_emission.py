@@ -1,3 +1,5 @@
+# Through matplotlib, we can plot a scatter between the ENGINESIZE VS CO2EMMISSIONS and finally save it
+
 import matplotlib.pyplot as plt
 
 
