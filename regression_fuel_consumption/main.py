@@ -1,13 +1,13 @@
 
-import numpy as np
 
 from src.display import disply
 from src.read_file import read_file
-from src.description import description
-from src.graphs_for_enginesize import show_histogram
-from src.scatter import show_scatter_for_emissions
-from src.scatter_train_test import scatter_train_test
-
+from src.description import description , show_info_data
+from src.count_engine_size import show_histogram
+from src.scatter_engine_emission import show_scatter_engine_emissions
+from src.split_train_test import split_train_test
+from src.train_linear_model import train_linear_model
+from src.show_train_test_plot import show_train_test_plot
 
 
 #---------------------------------------
@@ -28,6 +28,10 @@ def main():
     df_description = description(df_fuel)
     disply(f"\nShow some information about data frame:\n\n{df_description}")
 
+    # اینجا متوجه میشیم که هیچ نالی نداره
+    show_info_data(df_fuel)
+    print(100*"*")
+
 #---------------------------------------
 
 
@@ -45,40 +49,36 @@ def main():
     # با این تابع فقط تعداد سایز موتور های متفاوت رو نشون میدیم
     # و بعد کامنتش میکنیم چون دیگه نمودارش رو سیو داریم
 
-    # show_histogram(separate_some_feature['ENGINESIZE'])
+    # show_histogram(separate_some_feature)
     
 #---------------------------------------
 
     # اینجا میخوایم که رابطه نموداری سایز موتور رو در مقابل تولید گاز نمایش بدیم
     
-    # show_scatter_for_emissions(separate_some_feature['ENGINESIZE'] , separate_some_feature['CO2EMISSIONS'])
+    # show_scatter_engine_emissions(separate_some_feature)
 
 #---------------------------------------
     # الان تعیین کردیم که با کدوم دیتا میخوایم بریم جلو و اونم سایز موتور است  وسپس باید دیتایی که 
     # مال موتوره رو میتونیم به دو قسمت تبدیل کنیم که یعنی ۸۰ درصد رو برای اموزش دادن یا ترین جدا کنیم
-    # و ۲۰ درصد رو برای تست کردن مدل و برای رندوم جدا کردن دیتاها باید از رندوم نامپای به اندازه 
-    # تعداد داده هایی که دیتافریممون داره عدد رندوم بین ۰ تا ۱ تولید کنیم وسپس اعداد موچکتر از 0.8 رو
-    # جدا کنیم که میشه داده های ترین ما و بقیه هم میشن داده های تست ما
+    # ۲۰ درصد رو هم برای تست
 
-    msk = np.random.rand(len(df_fuel)) < 0.8
+    train_X , test_X , train_y , test_y = split_train_test(separate_some_feature)
 
-    train = separate_some_feature[msk]  # حدود ۸۰ درصد رو به عنوان ترین جدا میکنه برامون
-    test = separate_some_feature[~msk]  # و با علامت تیلدا بقیه رو به عنوان تست جدا میکنه
-
-    disply(f"\nshow the train data:\n\n{train}")
-    disply(f"\nshow the test data:\n\n{test}")
 
 #---------------------------------------
-    
-    # دوباره نمودار رابطه رو رسم میکنیم اما اینبار به جای کل دیتا دیتای ترین رو با رنگ جدا و تست رو با رنگ جدا
-    # حالا ما سعی میکنیم که از داده ترین بهترین خطی که ممکنه رو برای پیش بینی پیدا کنیم و با داده تست
-    # دقتش رو بررسی کنیم و ببینیم که چقد درست پیش بینی میکنه
+    # حالا که داده های ترین و تست رو داریم میتونیم بریم و از سایکیلرن مدل خطیمون رو بسازیم
+    # ما ترین ایکس رو اینجین سایز قرار میدیم و ترین وای رو تولید گاز و توی مدلمون باید فیت بشه
+    # و توی این تابعی که صدا میزنیم کوفیشنت و اینترسفت رو حساب میکنیم که میشه نقطه شروع نمودار و ضریب ایکس
+    # که اینجا ضریب ایکس میشه ضریب سایز موتور
 
-    # scatter_train_test(train , test)
+
+    model = train_linear_model(train_X , train_y)
 
 #---------------------------------------
 
-    
+
+    show_train_test_plot(train_X , train_y , test_X , test_y , model)
+
 
 
 #---------------------------------------
